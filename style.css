@@ -1,0 +1,233 @@
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+h1 {
+    font-size: 3em;
+    margin: 0;
+    letter-spacing: 5px;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin: 0;
+    color: #aaa;
+}
+
+main {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+#upload-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.upload-area {
+    width: 100%;
+    height: 200px;
+    border: 2px dashed #444;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    border-radius: 10px;
+    transition: border-color 0.3s;
+}
+
+.upload-area:hover {
+    border-color: #777;
+}
+
+.upload-area i {
+    font-size: 4em;
+    color: #777;
+}
+
+.upload-area p {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: #aaa;
+}
+
+#photo-upload {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+#image-preview-container {
+    display: none;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 20px;
+}
+
+#original-photo {
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid #555;
+}
+
+#enhance-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#enhance-button:hover:not(:disabled) {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+#enhance-button:disabled {
+    background-color: #444;
+    cursor: not-allowed;
+}
+
+#enhanced-section {
+    width: 100%;
+    text-align: center;
+}
+
+.enhanced-gallery {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.enhanced-gallery img {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    border-radius: 10px;
+    border: 2px solid #007bff;
+}
+
+.hidden {
+    display: none;
+}
+
+#message-box-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s;
+}
+
+#message-box-icon:hover {
+    transform: scale(1.1);
+}
+
+#message-box-icon i {
+    color: #fff;
+    font-size: 2.5em;
+}
+
+#message-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #1a1a1a;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2em;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: #fff;
+}
+
+#user-message {
+    width: 100%;
+    height: 100px;
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 5px;
+    resize: none;
+}
+
+#send-message-button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background-color: #25D366;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#send-message-button:hover {
+    background-color: #128C7E;
+}
