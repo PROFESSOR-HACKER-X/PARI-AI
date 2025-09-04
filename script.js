@@ -12,43 +12,50 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendMessageButton = document.getElementById('send-message-button');
     const userMessageInput = document.getElementById('user-message');
 
-    let originalPhotoBlob = null; // To store the photo for sending via WhatsApp
+    let originalPhotoFile = null; // Store the original file object
+    let enhancedPhotoBlobs = []; // Store the enhanced image blobs
 
     // Handle photo upload
     photoUpload.addEventListener('change', (event) => {
         const file = event.target.files[0];
         if (file) {
-            originalPhotoBlob = file;
+            originalPhotoFile = file;
             const reader = new FileReader();
             reader.onload = (e) => {
                 originalPhoto.src = e.target.result;
                 imagePreviewContainer.style.display = 'block';
                 enhanceButton.disabled = false;
-                enhancedSection.classList.add('hidden'); // Hide enhanced section if new photo is uploaded
+                enhancedSection.classList.add('hidden'); // Hide enhanced section if a new photo is uploaded
             };
             reader.readAsDataURL(file);
         } else {
             imagePreviewContainer.style.display = 'none';
             enhanceButton.disabled = true;
-            originalPhotoBlob = null;
+            originalPhotoFile = null;
         }
     });
 
     // Handle enhance button click
     enhanceButton.addEventListener('click', () => {
-        // This is a placeholder for the actual AI enhancement process.
-        // In a real application, you would send the photo to a backend server here.
-        alert('Enhancing photo... (This is a mock process)');
+        alert('Enhancing photo... Please wait.');
+        enhanceButton.disabled = true;
 
-        // Simulate 3 enhanced photos (using the same original for this demo)
+        // Simulate a back-end call to the AI model
+        // In a real app, you would send originalPhotoFile to your server here
         setTimeout(() => {
             const originalSrc = originalPhoto.src;
-            enhancedPhotos[0].src = originalSrc;
-            enhancedPhotos[1].src = originalSrc;
-            enhancedPhotos[2].src = originalSrc;
+            enhancedPhotoBlobs = [];
+
+            // Simulate the enhanced images coming from the server
+            // For this demo, we use the original image's Data URL
+            enhancedPhotos.forEach((img, index) => {
+                img.src = originalSrc;
+                enhancedPhotoBlobs.push(originalSrc); // Store the Data URL for sending later
+            });
 
             enhancedSection.classList.remove('hidden');
-        }, 2000); // Simulate a 2-second delay
+            enhanceButton.disabled = false;
+        }, 2000); // 2-second delay to simulate processing
     });
 
     // Handle message box icon click to show the modal
@@ -62,35 +69,43 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Handle send message button click
-    sendMessageButton.addEventListener('click', () => {
+    sendMessageButton.addEventListener('click', async () => {
         const userMessage = userMessageInput.value;
-        const enhancedImages = Array.from(enhancedPhotos).map(img => img.src);
 
-        if (originalPhotoBlob) {
-            // In a real application, this is where you would call a backend API
-            // to send the data (message, original photo, enhanced photos) to the WhatsApp number.
-            // The WhatsApp API (like Twilio, Vonage, or the official Business API)
-            // would be used on the server side to handle this.
-            
-            // The following is a placeholder for the actual logic.
-            // Sending images directly to a WhatsApp number from a browser is not possible
-            // without a backend and an API.
-            
-            // Example of what the backend would do:
-            // 1. Receive the user message, original image, and enhanced images.
-            // 2. Use a WhatsApp API client to send them to the specified number.
-            
-            alert(`Sending message to WhatsApp...
-            Message: "${userMessage}"
-            Original Photo: ${originalPhotoBlob.name}
-            Enhanced Photos: ${enhancedImages.length} images
-            (This is a mock action. A backend is required for actual WhatsApp integration.)`);
+        if (!originalPhotoFile) {
+            alert('Please upload a photo first.');
+            return;
+        }
 
-            // Clear input and close modal
-            userMessageInput.value = '';
-            messageModal.classList.add('hidden');
-        } else {
-            alert('Please upload a photo and enhance it first.');
+        // Prepare data to send to the back-end
+        const formData = new FormData();
+        formData.append('message', userMessage);
+        formData.append('originalPhoto', originalPhotoFile);
+
+        // Add enhanced photos to the form data
+        enhancedPhotoBlobs.forEach((blob, index) => {
+            formData.append(`enhancedPhoto${index + 1}`, blob);
+        });
+
+        try {
+            // Send data to your back-end server endpoint
+            const response = await fetch('/send-to-whatsapp', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert('Message and photos sent to WhatsApp successfully!');
+                userMessageInput.value = '';
+                messageModal.classList.add('hidden');
+            } else {
+                alert(`Error: ${result.message || 'Failed to send to WhatsApp.'}`);
+            }
+        } catch (error) {
+            console.error('Error sending data:', error);
+            alert('An unexpected error occurred. Please try again.');
         }
     });
 
